@@ -1,5 +1,7 @@
 package com.example.qs.eosbrowser.http.bean;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 public class ResAction {
@@ -258,7 +260,7 @@ public class ResAction {
 
                 private String account;
                 private String name;
-                private DataBean data;
+                private JsonObject data;
                 private String hex_data;
                 private List<AuthorizationBean> authorization;
 
@@ -278,11 +280,11 @@ public class ResAction {
                     this.name = name;
                 }
 
-                public DataBean getData() {
+                public JsonObject getData() {
                     return data;
                 }
 
-                public void setData(DataBean data) {
+                public void setData(JsonObject data) {
                     this.data = data;
                 }
 

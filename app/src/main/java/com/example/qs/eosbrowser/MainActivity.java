@@ -1,6 +1,7 @@
 package com.example.qs.eosbrowser;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     ListFragment listFragment;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +36,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        Exe.getAction("http://192.168.1.120:8888", "zebra", new Callback<ResAction>() {
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onResponse(Call<ResAction> call, Response<ResAction> response) {
-                listFragment.setData(response.body(),"zebra");
+            public void run() {
+//                Exe.getAction("https://proxy.eosnode.tools", "gameinvestor", new Callback<ResAction>() {
+                Exe.getAction("http://192.168.0.107:8888", "q", new Callback<ResAction>() {
+                    @Override
+                    public void onResponse(Call<ResAction> call, Response<ResAction> response) {
+                        listFragment.setData(response.body(),"q");
 
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<ResAction> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), 0).show();
+                    @Override
+                    public void onFailure(Call<ResAction> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, t.getMessage(), 0).show();
+                    }
+                });
+                loadData();
             }
-        });
+        }, 3000);
+
 
     }
 

@@ -22,9 +22,11 @@ public class ListActionAdapter extends BaseQuickAdapter<ResAction.ActionsBean, B
     @Override
     protected void convert(BaseViewHolder helper, ResAction.ActionsBean item) {
         if (item.getAction_trace().getAct().getAccount().equals("eosio.token") && item.getAction_trace().getAct().getName().equals("transfer")) {
-            helper.setText(R.id.content, item.getAction_trace().getAct().getData().getFrom() + "->" + item.getAction_trace().getAct().getData().getTo());
-            helper.setText(R.id.memo, item.getAction_trace().getAct().getData().getMemo());
-            if (item.getAction_trace().getAct().getData().getFrom().equals(userName)) {
+            helper.getView(R.id.content).setVisibility(View.VISIBLE);
+            ResAction.ActionsBean.ActionTraceBean.ActBean.DataBean dataBean = new Gson().fromJson(item.getAction_trace().getAct().getData(), ResAction.ActionsBean.ActionTraceBean.ActBean.DataBean.class);
+            helper.setText(R.id.content, dataBean.getFrom() + "->" + dataBean.getTo() + ":" + dataBean.getQuantity());
+            helper.setText(R.id.memo, dataBean.getMemo());
+            if (dataBean.getFrom().equals(userName)) {
                 helper.setText(R.id.type, "sent");
                 helper.getView(R.id.type).setBackgroundColor(helper.getConvertView().getContext().getResources().getColor(R.color.color_sent));
             } else {
@@ -34,8 +36,8 @@ public class ListActionAdapter extends BaseQuickAdapter<ResAction.ActionsBean, B
         } else {
             helper.setText(R.id.type, item.getAction_trace().getAct().getAccount() + "-" + item.getAction_trace().getAct().getName());
             helper.getView(R.id.type).setBackgroundColor(helper.getConvertView().getContext().getResources().getColor(R.color.color_other));
-            helper.setText(R.id.memo, new Gson().toJson(item.getAction_trace().getAct().getData()) );
-            helper.setText(R.id.content, "" );
+            helper.setText(R.id.memo, new Gson().toJson(item.getAction_trace().getAct().getData()));
+            helper.getView(R.id.content).setVisibility(View.GONE);
 
         }
     }
